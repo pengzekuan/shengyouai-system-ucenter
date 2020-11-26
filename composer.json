@@ -1,7 +1,7 @@
 {
     "name": "shengyouai/shengyouai-system-ucenter",
-    "type": "project",
-    "description": "用户中心",
+    "type": "library",
+    "description": "用户中心模块",
     "keywords": [
         "shengyouai",
         "laravel"
