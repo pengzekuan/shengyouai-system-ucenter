@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Shengyouai\App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 

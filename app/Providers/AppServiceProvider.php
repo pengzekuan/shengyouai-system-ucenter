@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Shengyouai\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http;
+namespace Shengyouai\App\Http;
 
-use App\Http\Middleware\Authenticate;
-use App\Http\Middleware\CheckForMaintenanceMode;
-use App\Http\Middleware\EncryptCookies;
-use App\Http\Middleware\RedirectIfAuthenticated;
-use App\Http\Middleware\TrimStrings;
-use App\Http\Middleware\TrustProxies;
-use App\Http\Middleware\VerifyCsrfToken;
+use Shengyouai\App\Http\Middleware\Authenticate;
+use Shengyouai\App\Http\Middleware\CheckForMaintenanceMode;
+use Shengyouai\App\Http\Middleware\EncryptCookies;
+use Shengyouai\App\Http\Middleware\RedirectIfAuthenticated;
+use Shengyouai\App\Http\Middleware\TrimStrings;
+use Shengyouai\App\Http\Middleware\TrustProxies;
+use Shengyouai\App\Http\Middleware\VerifyCsrfToken;
 use Fruitcake\Cors\HandleCors;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
@@ -64,6 +64,10 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             SubstituteBindings::class,
         ],
+
+        'ucenter' => [
+
+        ]
     ];
 
     /**
