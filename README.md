@@ -6,7 +6,36 @@
 
 ```shell script
 > composer require shengyouai/shengyouai-system-ucenter:0.0.2
-> php artisan vendor:publish --provider="Shengyouai\\App\\Providers\\UCenterServiceProvider"
+> php artisan vendor:publish --provider="Shengyouai\App\Providers\UCenterServiceProvider"
+```
+
+```
+App\Providers\RouteServiceProvider::class
+
+public function map()
+{
+    ...
+    //
+    $this->mapUCenterRoutes();
+}
+
+protected function mapUCenterRoutes()
+{
+    Route::prefix('ucenter')
+        ->middleware('ucenter')
+        ->namespace('Shengyouai\App\Http\Controllers\UCenter')
+        ->group(base_path('routes/ucenter.php'));
+}
+```
+
+```
+App\Http\Kernel.php
+protected $middlewareGroups = [
+    'ucenter' => [
+            
+    ]
+]
+
 ```
 
 ## 包结构
