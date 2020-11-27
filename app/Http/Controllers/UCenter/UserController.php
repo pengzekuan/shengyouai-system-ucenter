@@ -8,6 +8,7 @@ use Shengyouai\App\Http\Resources\ApiResource;
 use Shengyouai\App\Http\Resources\Model\UCUserResource;
 use Shengyouai\App\Http\Resources\TestResource;
 use Shengyouai\App\UCModels\UCUser;
+use Shengyouai\App\UCModels\UCUserOauth;
 
 /**
  * 用户数据入口
@@ -51,11 +52,44 @@ class UserController extends UCenterController
      * 用户登录
      * @param Request $request
      * @param Response $response
-     * @return void
+     * @return Response
      */
     public function login(Request $request, Response $response)
     {
-        $response->setContent('登录成功')->setStatusCode(200)->send();
+        // 参数校验
+        $params = $request->input();
+        // 手机号登录
+        $cellphone = !empty($params['cellphone']) ? $params['cellphone'] : null;
+
+        // 手机号正则验证
+        if (!UCUser::validCellphone($cellphone)) {
+            return ApiResource::warning($response, '手机号格式有误');
+        }
+
+        // TODO 短信验证
+
+        // 查询用户
+        $find = UCUser::findByCellphone($cellphone);
+
+        // 手机号登录即注册
+        if (!$find) {
+            $user = new UCUser();
+            $user = $user->registry($cellphone);
+            return ApiResource::success($response, new UCUserResource($user));
+        }
+
+        // 查询登录状态
+        $oauth = UCUserOauth::check($find->id);
+
+        if (!$oauth) {
+            // 授权
+            $oauth = new UCUserOauth();
+            $oauth->add($find->id, $cellphone);
+        }
+
+        $find->oauth = $oauth;
+
+        return ApiResource::success($response, new UCUserResource($find));
     }
 
     /**

@@ -54,17 +54,10 @@ class UCUser extends UCModel
         $this->save();
 
         // 注册用户登录
-        $author = new UCUserAuthorization();
-        $accessToken = $author->getAccessToken($this->id, $cellphone, $this->created_at);
-
-        $deadline = $author->getAccessDeadLine($this->created_at);
         $oauth = new UCUserOauth();
-        $oauth->add($this->id, $accessToken, $this->created_at, $deadline);
+        $oauth->add($this->id, $cellphone);
 
-        $this->oauth = [
-            'sessionKey' => $accessToken,
-            'accessDeadline' => $deadline
-        ];
+        $this->oauth = $oauth;
 
         return $this;
     }

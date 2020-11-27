@@ -26,6 +26,20 @@ class UCUserResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $data = [
+            'id' => $this->resource->id,
+            'disabled' => $this->resource->disabled,
+            'debug' => $this->resource->debug,
+        ];
+
+        $oauth = $this->resource->oauth;
+        if ($oauth) {
+            $data['oauth'] = [
+                'accessDateTime' => $oauth->accessDateTime,
+                'accessDeadline' => $oauth->accessDeadline,
+                'sessionKey' => $oauth->sessionKey,
+            ];
+        }
+        return $data;
     }
 }

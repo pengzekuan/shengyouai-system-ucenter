@@ -4,6 +4,7 @@
 namespace Shengyouai\App\UCModels;
 
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -12,6 +13,16 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UCModel extends Model
 {
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('timeStampOrder', function (Builder $builder) {
+            $builder->orderByDesc('updated_at')
+                ->orderByDesc('created_at');
+        });
+    }
+
     public static function findById($id)
     {
         return self::find($id);
