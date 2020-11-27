@@ -4,38 +4,66 @@
 
 ## 使用说明
 
+1. 安装依赖
+
 ```shell script
 > composer require shengyouai/shengyouai-system-ucenter:0.0.2
+```
+
+2. 执行命令，引用必要文件
+
+```shell script
 > php artisan vendor:publish --provider="Shengyouai\App\Providers\UCenterServiceProvider"
 ```
 
-```
-App\Providers\RouteServiceProvider::class
+3. 修改文件 App\Providers\RouteServiceProvider::class
 
-public function map()
-{
-    ...
-    //
-    $this->mapUCenterRoutes();
+```php
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
+
+class RouteServiceProvider extends ServiceProvider {
+    public function map()
+    {
+        // ...
+        //
+        $this->mapUCenterRoutes();
+    }
+    
+    protected function mapUCenterRoutes()
+    {
+        Route::prefix('ucenter')
+            ->middleware('ucenter')
+            ->namespace('Shengyouai\App\Http\Controllers\UCenter')
+            ->group(base_path('routes/ucenter.php'));
+    }
 }
+```
 
-protected function mapUCenterRoutes()
+4. 修改文件 App\Http\Kernel.php
+```php
+class Kernel extends HttpKernel
 {
-    Route::prefix('ucenter')
-        ->middleware('ucenter')
-        ->namespace('Shengyouai\App\Http\Controllers\UCenter')
-        ->group(base_path('routes/ucenter.php'));
+    protected $middlewareGroups = [
+        // ...
+        'ucenter' => [
+                
+        ]
+    ];
 }
 ```
 
-```
-App\Http\Kernel.php
-protected $middlewareGroups = [
-    'ucenter' => [
-            
-    ]
-]
+5. 修改 composer.json，加入引入文件命名空间映射
 
+```json
+{
+  "autoload": {
+          "psr-4": {
+              "App\\": "app/",
+              "Shengyouai\\App\\Http\\Controllers\\UCenter\\": "app/Http/Controllers/UCenter/"
+          }
+      }
+}
 ```
 
 ## 包结构
