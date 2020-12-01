@@ -21,12 +21,12 @@ class CreateUcUOauthTable extends Migration
             $table->id();
             $table->unsignedBigInteger('uid')->comment('授权用户编号');
             $table->smallInteger('pId')->default(0)->comment('授权平台,默认本平台授权，无第三方授权');
-            $table->string('ip')->nullable()->comment('客户端登录IP');
-            $table->string('device')->nullable()->comment('客户端登录设备');
-            $table->string('network')->nullable()->comment('客户端登录网络');
+            $table->string('ip', 32)->nullable()->comment('客户端登录IP');
+            $table->string('device', 64)->nullable()->comment('客户端登录设备');
+            $table->string('network', 20)->nullable()->comment('客户端登录网络');
             $table->dateTime('accessDateTime')->comment('授权时间');
             $table->dateTime('accessDeadline')->comment('授权失效时间');
-            $table->string('sessionKey')->nullable()->comment('授权密钥');
+            $table->string('sessionKey', 128)->nullable()->comment('授权密钥');
             $table->boolean('disabled')->default(0)->comment('主动取消授权');
             $table->timestamps();
 

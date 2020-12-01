@@ -15,4 +15,20 @@ class UCUserChannel extends UCModel
     const CHANNEL_WX_OFFICIAL = 2; // 公众号
 
     const CHANNEL_WX_OPEN = 3; // 三方平台
+
+    /**
+     * @param $uid
+     * @param $type
+     * @param $appId
+     * @param $scene
+     * @return mixed|void
+     */
+    public function add($uid, $type, $appId, $scene)
+    {
+        $this->uid = $this->id;
+        $this->type = $type;
+        $this->appId = $appId;
+        $this->scene = $scene;
+        $this->save();
+    }
 }

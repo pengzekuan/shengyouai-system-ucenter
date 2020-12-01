@@ -4,9 +4,11 @@ namespace Shengyouai\App\UCModels;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UCUserFeature extends Model
+class UCUserFeature extends UCModel
 {
     protected $table = 'uc_u_feature';
+
+    protected $fillable = ['uid', 'nickName', 'avatar', 'sex', 'idType', 'realName', 'idCard'];
 
     const SEX_MALE = 1; // 性别 男
 
@@ -17,6 +19,13 @@ class UCUserFeature extends Model
     const ID_CARD_TYPE = 1; // 身份证
 
     const PASSPORT_TYPE = 2; // 护照
+
+    public static function findByUserId($uid)
+    {
+        return self::getOne([
+            ['uid', '=', $uid]
+        ]);
+    }
 
 
 }

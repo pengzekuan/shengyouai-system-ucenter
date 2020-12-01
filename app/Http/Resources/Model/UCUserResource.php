@@ -28,8 +28,9 @@ class UCUserResource extends JsonResource
     {
         $data = [
             'id' => $this->resource->id,
-            'disabled' => $this->resource->disabled,
-            'debug' => $this->resource->debug,
+            'pid' => $this->resource->pid ?: 0,
+            'disabled' => boolval($this->resource->disabled),
+            'debug' => boolval($this->resource->debug),
         ];
 
         $oauth = $this->resource->oauth;

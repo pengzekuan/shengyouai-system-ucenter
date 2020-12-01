@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Shengyouai\App\Http\Resources\ApiResource;
 use Shengyouai\App\Http\Resources\Model\UCUserResource;
+use Shengyouai\App\Oauth\UCUserAuthorization;
 use Shengyouai\App\UCModels\UCUser;
 use Shengyouai\App\UCModels\UCUserOauth;
 
@@ -16,6 +17,17 @@ use Shengyouai\App\UCModels\UCUserOauth;
  */
 class UserController extends UCenterController
 {
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return array|Response
+     */
+    public function oauth(Request $request, Response $response)
+    {
+        return (new UCUserAuthorization())->oauth($request, $response);
+    }
+
     /**
      * 用户注册
      * @param Request $request
@@ -94,7 +106,6 @@ class UserController extends UCenterController
             $oauth = new UCUserOauth();
             $oauth->add(
                 $find->id,
-                $cellphone,
                 0,
                 ApiResource::getClientIp($request),
                 ApiResource::getDevice($request),
@@ -108,14 +119,36 @@ class UserController extends UCenterController
     }
 
     /**
-     * 三方授权登录
+     * 三方授权登录 支持微信公众号、小程序登录，
      * @param Request $request
      * @param Response $response
      * @return void
      */
     public function thirtyLogin(Request $request, Response $response)
     {
+        $params = $request->input();
+        $platform = isset($params['p']) ? $params['p'] : 0;
+        if ($platform === UCUserOauth::PLATFORM_SELF) {
+            return (new UCUserAuthorization())->oauth();
+        }
+
+        if ($platform === UCUserOauth::PLATFORM_WX_MINI) {
+            return (new UCUserAuthorization())->wxMiniOauth();
+        }
+
+        if ($platform === UCUserOauth::PLATFORM_WX_OFFICIAL) {
+            return (new UCUserAuthorization())->wxMiniOauth();
+        }
+
         $response->setContent('授权成功')->setStatusCode(200)->send();
+    }
+
+    /**
+     * 手机号绑定
+     */
+    public function bindPhone()
+    {
+
     }
 
     /**

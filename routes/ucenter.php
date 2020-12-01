@@ -2,9 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    echo 'ucenter';
-});
+Route::match(['get', 'post'], '/oauth', 'UserController@oauth');
 
 Route::post('/registry', 'UserController@registry');
 

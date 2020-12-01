@@ -18,41 +18,41 @@ class ApiResource
     /**
      * 请求成功响应
      * @param Response $response
-     * @param JsonResource|null $jsonResource
+     * @param mixed $data
      * @return Response
      */
-    public static function success(Response $response, JsonResource $jsonResource = null)
+    public static function success(Response $response, $data)
     {
-        return self::sendData($response, 200, $jsonResource);
+        return self::sendData($response, 200, $data);
     }
 
     /**
      * 发送请求数据
      * @param Response $response
      * @param int $statusCode
-     * @param JsonResource| null $jsonResource
+     * @param mixed $data
      * @return Response
      */
-    private static function sendData(Response $response, int $statusCode, JsonResource $jsonResource = null)
+    private static function sendData(Response $response, int $statusCode, $data)
     {
-        if (!$jsonResource) {
+        if (!$data) {
             return self::send($response, $statusCode);
         }
 
-        return self::send($response, $statusCode, ResponseResource::success($jsonResource));
+        return self::send($response, $statusCode, ResponseResource::success($data));
     }
 
     /**
      * @param Response $response
      * @param int $statusCode
-     * @param JsonResource|null $jsonResource
+     * @param ResponseResource|null $responseResource
      * @return Response
      */
-    private static function send(Response $response, int $statusCode, JsonResource $jsonResource = null)
+    private static function send(Response $response, int $statusCode, ResponseResource $responseResource = null)
     {
         $response->setStatusCode($statusCode);
-        if ($jsonResource) {
-            $response->setContent($jsonResource);
+        if ($responseResource) {
+            $response->setContent($responseResource);
         }
         return $response;
     }
@@ -60,12 +60,12 @@ class ApiResource
     /**
      * 创建新资源成功响应
      * @param Response $response
-     * @param JsonResource $jsonResource
+     * @param mixed $data
      * @return Response
      */
-    public static function created(Response $response, JsonResource $jsonResource)
+    public static function created(Response $response, $data)
     {
-        return self::sendData($response, 201, $jsonResource);
+        return self::sendData($response, 201, $data);
     }
 
     /**
@@ -231,5 +231,10 @@ class ApiResource
     public static function getNetwork(Request $request)
     {
         return '';
+    }
+
+    public static function redirect(Response $response, $url)
+    {
+        return header('Location:' . $url);
     }
 }

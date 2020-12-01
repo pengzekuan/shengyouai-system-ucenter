@@ -13,6 +13,14 @@ class UCUserOauth extends UCModel
 
     const AUTHORIZATION_PREFIX = 'Bearer';
 
+    const PLATFORM_SELF = 0; // 本服务平台
+
+    const PLATFORM_WX_MINI = 1; // 小程序平台
+
+    const PLATFORM_WX_OFFICIAL = 2; // 公众号平台
+
+
+
     protected $table = 'uc_u_oauth';
 
     /**
@@ -55,18 +63,17 @@ class UCUserOauth extends UCModel
     /**
      * 添加授权信息
      * @param int $uid 用户id
-     * @param string $cellphone 用户手机号
      * @param int $pid 授权平台id， 默认0
      * @param string $ip 授权客户端IP
      * @param string $device 授权客户端设备
      * @param string $network 授权客户端网络
      * @return $this
      */
-    public function add($uid = 0, $cellphone = '', $pid = 0, $ip = '', $device = '', $network = '')
+    public function add($uid = 0, $pid = 0, $ip = '', $device = '', $network = '')
     {
         $now = Carbon::now()->format(Carbon::DEFAULT_TO_STRING_FORMAT);
         $author = new UCUserAuthorization();
-        $accessToken = $author->getAccessToken($uid, $cellphone, $now);
+        $accessToken = $author->getAccessToken($uid, $pid, $now);
 
         $deadline = $author->getAccessDeadLine($now);
         $this->uid = $uid;

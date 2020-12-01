@@ -19,7 +19,7 @@ class CreateUcUBasicTable extends Migration
     {
         Schema::create('uc_u_basic', function (Blueprint $table) {
             $table->id();
-            $table->string('cellphone')->comment('用户手机号，手机号必须保证唯一');
+            $table->string('cellphone', 11)->nullable()->comment('用户手机号，手机号必须保证唯一');
             $table->boolean('disabled')->default(0)->comment('用户禁用标识');
             $table->boolean('debug')->default(0)->comment('测试用户标识');
             $table->timestamps();

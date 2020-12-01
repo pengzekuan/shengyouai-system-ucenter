@@ -58,19 +58,23 @@ class UCUser extends UCModel
             $scene = isset($options['scene']) ? $options['scene'] : null; // 来源场景值
 
             $ucChannelModel = new UCUserChannel();
-            $ucChannelModel->uid = $this->id;
-            $ucChannelModel->type = $cType;
-            $ucChannelModel->appId = $cId;
-            $ucChannelModel->scene = $scene;
-            $ucChannelModel->save();
+            $ucChannelModel->add($this->id, $cType, $cId, $scene);
         }
 
         // 注册用户登录
         $oauth = new UCUserOauth();
-        $oauth->add($this->id, $cellphone, $options['pid'], $options['clientIp'], $options['device'], $options['network']);
+        $oauth->add($this->id, $options['pid'], $options['clientIp'], $options['device'], $options['network']);
 
         $this->oauth = $oauth;
 
         return $this;
+    }
+
+    /**
+     * 用户登录
+     */
+    public function oauth()
+    {
+
     }
 }
