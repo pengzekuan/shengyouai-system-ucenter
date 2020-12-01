@@ -7,7 +7,7 @@
 1. 安装依赖
 
 ```shell script
-> composer require shengyouai/shengyouai-system-ucenter:0.0.2
+> composer require shengyouai/shengyouai-system-ucenter:0.0.8
 ```
 
 2. 执行命令，引用必要文件
@@ -70,22 +70,62 @@ class Kernel extends HttpKernel
 
 ## 接口说明
 
-### 用户注册接口
+### 用户登录/注册接口
 
-- `/ucenter/registry`
-- `POST`
+接口地址：`/ucenter/oauth`
 
-### 用户登录接口
+公共参数
+```json5
+{
+  "p": "0|1|2", // 授权平台 0 手机号 1 小程序 2 公众号
+  "cId": "", // 用户来源渠道id，小程序、公众号、App的appId，或者系统自定义渠道id，如用户分享
+  "ct": "", // 来源类型 0 分享用户；1 小程序应用；2 公众号；3 三方平台 -1 其他 
+  "scene": "" // 来源场景值
+}
+```
 
-- `/ucenter/login`
-- `POST`
+- 手机号注册/登录
 
-### 用户三方授权接口
+    - 方法：`post`
+    - 参数类型：`application/json`
+    - 参数：
+        ```json5
+        {
+          "cellphone": "手机号",
+          "code": "短信验证码",
+          "p": 0
+        }
+        ```
+      
+- 小程序授权登录
 
-- `/ucenter/thirtyLogin`
-- `POST`
+    - 方法：`post`
+    - 参数类型：`application/json`
+    - 参数：
+        ```json
+        {
+          "code": "小程序授权code",
+          "p": 1
+        }
+        ```
+      
+- 公众号网页授权
 
-### 用户退出登录接口
+    1. 授权跳转
 
-- `/ucenter/logout`
-- `POST`
+        - 方法：`get`
+        - 参数：
+            - `p` 授权平台指定 2表示公众号
+            - `r` 获取授权链接还是直接跳转
+            - `t` 授权回调地址，该地址必须urlencode，授权成功回调地址返回token参数，客户端直接获取保存
+            ```
+            p=2&r=1&t=redirect_uri
+            ```
+    2. 授权回调【接口端，无需调用】
+   
+
+### 退出登录接口
+
+接口地址：`/ucenter/logout`
+
+接口方法：`POST`

@@ -351,7 +351,11 @@ EOD;
             Log::debug('授权', ['auth' => $auth->toArray()]);
 
             if (isset($params['t'])) {
-                return ApiResource::redirect($response, $params['t']);
+                $target = $params['t'];
+
+                $target .= (preg_match("/\\?/", $target) ? '&' : '?') . 'token=' . $auth->sessionKey;
+
+                return ApiResource::redirect($response, $target);
             }
 
             return ApiResource::success($response, $oauth->user());
