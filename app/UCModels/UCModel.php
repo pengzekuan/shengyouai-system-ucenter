@@ -38,9 +38,9 @@ class UCModel extends Model
         return self::where($where)->first();
     }
 
-    public static function getAll()
+    public static function getAll($where)
     {
-
+        return self::where($where)->get();
     }
 
     public function add($data)

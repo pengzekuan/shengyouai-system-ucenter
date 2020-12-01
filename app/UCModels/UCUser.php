@@ -3,7 +3,6 @@
 namespace Shengyouai\App\UCModels;
 
 use Carbon\Carbon;
-use Shengyouai\App\Oauth\UCUserAuthorization;
 
 class UCUser extends UCModel
 {
@@ -37,7 +36,6 @@ class UCUser extends UCModel
 
     public function getCreatedAtAttribute($v)
     {
-        return $v;
         return Carbon::parse($v)->format(Carbon::DEFAULT_TO_STRING_FORMAT);
     }
 
@@ -53,9 +51,23 @@ class UCUser extends UCModel
 
         $this->save();
 
+        // 用户来源登记
+        if ($options && !empty($options['cid'])) {
+            $cId = $options['cId']; // 来源id标记
+            $cType = isset($options['ct']) ? $options['ct'] : 0; // 来源类型
+            $scene = isset($options['scene']) ? $options['scene'] : null; // 来源场景值
+
+            $ucChannelModel = new UCUserChannel();
+            $ucChannelModel->uid = $this->id;
+            $ucChannelModel->type = $cType;
+            $ucChannelModel->appId = $cId;
+            $ucChannelModel->scene = $scene;
+            $ucChannelModel->save();
+        }
+
         // 注册用户登录
         $oauth = new UCUserOauth();
-        $oauth->add($this->id, $cellphone);
+        $oauth->add($this->id, $cellphone, $options['pid'], $options['clientIp'], $options['device'], $options['network']);
 
         $this->oauth = $oauth;
 

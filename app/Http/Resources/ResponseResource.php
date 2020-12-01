@@ -38,7 +38,7 @@ class ResponseResource extends JsonResource
      */
     public static function success($data)
     {
-        return new self(0, 'success', $data);
+        return new self(0, 'ok', $data);
     }
 
     /**

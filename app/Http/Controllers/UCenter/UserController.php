@@ -1,12 +1,11 @@
 <?php
+
 namespace Shengyouai\App\Http\Controllers\UCenter;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 use Shengyouai\App\Http\Resources\ApiResource;
 use Shengyouai\App\Http\Resources\Model\UCUserResource;
-use Shengyouai\App\Http\Resources\TestResource;
 use Shengyouai\App\UCModels\UCUser;
 use Shengyouai\App\UCModels\UCUserOauth;
 
@@ -30,6 +29,8 @@ class UserController extends UCenterController
 
         $cellphone = isset($params['cellphone']) ? $params['cellphone'] : null;
 
+        unset($params['cellphone']);
+
         // 手机号正则验证
         if (!UCUser::validCellphone($cellphone)) {
             return ApiResource::warning($response, '手机号格式有误');
@@ -42,8 +43,13 @@ class UserController extends UCenterController
 
         // TODO 短信验证
 
+        $params['pid'] = 0;
+        $params['clientIp'] = ApiResource::getClientIp($request);
+        $params['device'] = ApiResource::getDevice($request);
+        $params['network'] = ApiResource::getNetwork($request);
+
         $user = new UCUser();
-        $user = $user->registry($cellphone);
+        $user = $user->registry($cellphone, $params);
 
         return ApiResource::created($response, new UCUserResource($user));
     }
@@ -61,6 +67,8 @@ class UserController extends UCenterController
         // 手机号登录
         $cellphone = !empty($params['cellphone']) ? $params['cellphone'] : null;
 
+        unset($params['cellphone']);
+
         // 手机号正则验证
         if (!UCUser::validCellphone($cellphone)) {
             return ApiResource::warning($response, '手机号格式有误');
@@ -74,7 +82,7 @@ class UserController extends UCenterController
         // 手机号登录即注册
         if (!$find) {
             $user = new UCUser();
-            $user = $user->registry($cellphone);
+            $user = $user->registry($cellphone, $params);
             return ApiResource::success($response, new UCUserResource($user));
         }
 
@@ -84,7 +92,14 @@ class UserController extends UCenterController
         if (!$oauth) {
             // 授权
             $oauth = new UCUserOauth();
-            $oauth->add($find->id, $cellphone);
+            $oauth->add(
+                $find->id,
+                $cellphone,
+                0,
+                ApiResource::getClientIp($request),
+                ApiResource::getDevice($request),
+                ApiResource::getNetwork($request)
+            );
         }
 
         $find->oauth = $oauth;
@@ -93,7 +108,7 @@ class UserController extends UCenterController
     }
 
     /**
-     * 用户登录
+     * 三方授权登录
      * @param Request $request
      * @param Response $response
      * @return void
@@ -107,11 +122,23 @@ class UserController extends UCenterController
      * 退出登录
      * @param Request $request
      * @param Response $response
-     * @return void
+     * @return Response
      */
     public function logout(Request $request, Response $response)
     {
-        $response->setContent('退出成功')->setStatusCode(200)->send();
+        // token 验证
+        $auth = ApiResource::authorization($request, $response);
+        if ($auth instanceof Response) {
+            return $auth;
+        }
+
+        if ($auth instanceof UCUser) {
+            $model = new UCUserOauth();
+            $model->disabled($auth->id, $auth->pid);
+            return ApiResource::success($response, null);
+        }
+
+        return ApiResource::warning($response, '未知错误');
     }
 
 }

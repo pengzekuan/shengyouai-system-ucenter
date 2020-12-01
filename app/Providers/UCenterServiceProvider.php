@@ -1,7 +1,7 @@
 <?php
+
 namespace Shengyouai\App\Providers;
 
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
 
 class UCenterServiceProvider extends ServiceProvider
@@ -19,7 +19,7 @@ class UCenterServiceProvider extends ServiceProvider
         $distCPath = $this->app->basePath() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Http' . DIRECTORY_SEPARATOR . 'Controllers'
             . DIRECTORY_SEPARATOR . 'UCenter';
 
-        if(!is_dir($distCPath)) {
+        if (!is_dir($distCPath)) {
             mkdir($distCPath);
         }
 
