@@ -6,8 +6,23 @@
 
 1. 安装依赖
 
+下载扩展包到本地
+
+配置`composer.json`,添加包下载路径
+
+```json5
+{
+  "repositories": {
+    "shengyouai/shengyouai-system-ucenter": {
+        "type": "path",
+        "url": "D:\\develop\\packagists\\shengyouai-system-ucenter"
+    }
+  },
+}
+```
+
 ```shell script
-> composer require shengyouai/shengyouai-system-ucenter:0.0.8
+> composer require shengyouai/shengyouai-system-ucenter
 ```
 
 2. 执行命令，引用必要文件
@@ -47,6 +62,8 @@ class RouteServiceProvider extends ServiceProvider {
 
 4. 修改文件 App\Http\Kernel.php
 ```php
+use Illuminate\Foundation\Http\Kernel as HttpKernel;
+
 class Kernel extends HttpKernel
 {
     protected $middlewareGroups = [
@@ -75,15 +92,15 @@ class Kernel extends HttpKernel
 
 ```
 # 微信小程序app_id
-WECHAT_MINI_PROGRAM_APP_ID=
+WECHAT_MINI_PROGRAM_APPID=
 # 微信小程序授权密钥
 WECHAT_MINI_PROGRAM_SECRET=
 
 # 微信公众号应用app_id
-WECHAT_OFFICIAL_PROGRAM_APP_ID=
+WECHAT_OFFICIAL_ACCOUNT_APPID=
 
 # 微信公众号应用授权密钥
-WECHAT_OFFICIAL_PROGRAM_SECRET=
+WECHAT_OFFICIAL_ACCOUNT_SECRET=
 
 # 短信服务
 # 服务app_id

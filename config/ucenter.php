@@ -2,12 +2,12 @@
 return [
     'wechat' => [
         'mini' => [
-            'app_id' => env('WECHAT_MINI_PROGRAM_APP_ID', ''),
+            'app_id' => env('WECHAT_MINI_PROGRAM_APPID', ''),
             'secret' => env('WECHAT_MINI_PROGRAM_SECRET', '')
         ],
         'official' => [
-            'app_id' => env('WECHAT_OFFICIAL_PROGRAM_APP_ID', ''),
-            'secret' => env('WECHAT_OFFICIAL_PROGRAM_SECRET', '')
+            'app_id' => env('WECHAT_OFFICIAL_ACCOUNT_APPID', ''),
+            'secret' => env('WECHAT_OFFICIAL_ACCOUNT_SECRET', '')
         ]
     ],
     'sms' => [
