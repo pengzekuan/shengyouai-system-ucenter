@@ -66,6 +66,33 @@ class Kernel extends HttpKernel
 }
 ```
 
+6. 环境配置
+
+```
+# 微信小程序app_id
+WECHAT_MINI_PROGRAM_APP_ID=
+# 微信小程序授权密钥
+WECHAT_MINI_PROGRAM_SECRET=
+
+# 微信公众号应用app_id
+WECHAT_OFFICIAL_PROGRAM_APP_ID=
+
+# 微信公众号应用授权密钥
+WECHAT_OFFICIAL_PROGRAM_SECRET=
+
+# 短信服务
+# 服务app_id
+SMS_APP_ID=
+# 服务key
+SMS_APP_KEY=
+# 验证码模板id
+SMS_TEMPLATE_ID=
+# 短信签名
+SMS_APP_SIGN=
+# 验证码有效期 单位秒
+SMS_CODE_EXPIRES_IN=300
+```
+
 ## 包结构
 
 ## 接口说明
