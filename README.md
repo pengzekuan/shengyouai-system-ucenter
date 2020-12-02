@@ -95,6 +95,33 @@ SMS_CODE_EXPIRES_IN=300
 
 ## 包结构
 
+```$xslt
+├── README.md 项目说明文档
+├── CHANGELOG.md 项目说明文档
+├── app 项目应用程序目录
+│   ├── Console  控制台程序
+│   ├── Exceptions 异常处理
+│   ├── Http  web请求目录
+│   │   ├── Controllers 控制器
+│   │   │   ├── UCenter 用户中心控制器，直接迁移使用
+│   ├── UCModels 用户中心数据模型
+│   ├── Providers   服务提供者
+│   │   ├── UCenterServiceProvider.php 包服务提供者
+│   ├── Services 用户中心业务处理层
+├── config  服务配置
+│   ├── ucenter.php
+├── database    数据库脚本
+│   ├── factories
+│   ├── migrations  数据库迁移脚本
+│   └── seeds   数据库初始化脚本
+├── routes  路由
+│   ├── ucenter.php
+├── tests   单元测试
+│   ├── Feature
+│   ├── TestCase.php
+│   └── Unit
+```
+
 ## 接口说明
 
 ### 用户登录/注册接口
@@ -185,3 +212,15 @@ SMS_CODE_EXPIRES_IN=300
   "code": ""
 }
 ```
+
+## 开放服务说明
+
+### 短信服务
+
+支持腾讯短信服务
+
+### 用户服务
+
+支持手机号、小程序、公众号平台用户注册、授权等操作
+
+

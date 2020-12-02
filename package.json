@@ -1,6 +1,6 @@
 {
     "private": true,
-    "version": "0.0.8",
+    "version": "0.0.9",
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -9,9 +9,19 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --disable-host-check --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
+        "version": "conventional-changelog -r 0 -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
+        "commit": "cz"
     },
     "devDependencies": {
-        "conventional-changelog-cli": "^2.1.0"
+        "conventional-changelog-cli": "^2.1.0",
+        "cz-conventional-changelog": "^3.3.0",
+        "commitizen": "^4.2.1",
+        "@commitlint/cli": "^9.1.2",
+        "@commitlint/config-conventional": "^9.1.2"
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
     }
 }
