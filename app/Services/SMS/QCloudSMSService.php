@@ -26,6 +26,15 @@ class QCloudSMSService extends SmsSingleSender implements SMSService
 
     private $expires_in;
 
+    /**
+     * 构造函数
+     * QCloudSMSService constructor.
+     * @param $appid
+     * @param $appkey
+     * @param $appSign
+     * @param $templateId
+     * @param int $expires_in
+     */
     public function __construct($appid, $appkey, $appSign, $templateId, $expires_in = 300)
     {
         parent::__construct($appid, $appkey);

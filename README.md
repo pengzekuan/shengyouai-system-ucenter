@@ -13,7 +13,12 @@
 2. 执行命令，引用必要文件
 
 ```shell script
-> php artisan vendor:publish --provider="Shengyouai\App\Providers\UCenterServiceProvider"
+# 配置文件引入
+> php artisan vendor:publish --provider="Shengyouai\App\Providers\UCenterServiceProvider" --tag=config --force
+# 路由引入
+> php artisan vendor:publish --provider="Shengyouai\App\Providers\UCenterServiceProvider" --tag=routes --force
+# 数据库迁移脚本引入更新，迁移脚本不能覆盖
+> php artisan vendor:publish --provider="Shengyouai\App\Providers\UCenterServiceProvider" --tag=migrations
 ```
 
 3. 修改文件 App\Providers\RouteServiceProvider::class

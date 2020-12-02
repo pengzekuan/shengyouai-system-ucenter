@@ -25,17 +25,19 @@ class UCenterServiceProvider extends ServiceProvider
 
         // 控制器迁移
         $this->publishes([
-            __DIR__ . '/../Http/Controllers/UCenter/UCenterController.php'
-            => $this->app->basePath() . '/app/Http/Controllers/UCenter/UCenterController.php',
-            __DIR__ . '/../Http/Controllers/UCenter/UserController.php'
-            => $this->app->basePath() . '/app/Http/Controllers/UCenter/UserController.php'
-        ], 'controllers');
+            __DIR__ . '/../Http/Controllers/UCenter/' => $this->app->basePath() . '/app/Http/Controllers/UCenter/'
+        ], 'routes');
 
 
         // 控制器，路由迁移
         $this->publishes([
             __DIR__ . '/../../routes/ucenter.php' => $this->app->basePath() . '/routes/ucenter.php'
         ], 'routes');
+
+        // 迁移脚本
+        $this->publishes([
+            __DIR__.'/../../database/migrations/' => database_path('migrations')
+        ], 'migrations');
     }
 
     /**

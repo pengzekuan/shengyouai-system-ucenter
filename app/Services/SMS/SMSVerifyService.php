@@ -4,6 +4,7 @@ namespace Shengyouai\App\Services\SMS;
 
 use Carbon\Carbon;
 use Shengyouai\App\UCModels\UCSMS;
+use Exception;
 
 /**
  * 短信继承方法
@@ -12,6 +13,12 @@ use Shengyouai\App\UCModels\UCSMS;
  */
 trait SMSVerifyService
 {
+    /**
+     * 发送短信验证码
+     * @param $cellphone
+     * @return mixed|UCSMS|void
+     * @throws Exception
+     */
     public function sendCode($cellphone)
     {
         // 生成验证码
@@ -19,6 +26,10 @@ trait SMSVerifyService
 
         // 添加短信记录
         $model = new UCSMS();
+
+        if (empty($this->_appId) || empty($this->templateId)) {
+            throw new Exception('系统未配置短信服务');
+        }
 
         $sms = $model->add($this->_appId, $this->templateId, $cellphone, $code);
 
