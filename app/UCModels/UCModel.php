@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Shengyouai\App\UCModels;
-
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -41,13 +39,5 @@ class UCModel extends Model
     public static function getAll($where)
     {
         return self::where($where)->get();
-    }
-
-    public function add($data)
-    {
-        $model = new $this($data);
-        $model->save();
-
-        return $model;
     }
 }

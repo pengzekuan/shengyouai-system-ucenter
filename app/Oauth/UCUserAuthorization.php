@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Shengyouai\App\Oauth;
-
 
 use Carbon\Carbon;
 use EasyWeChat\Factory;
@@ -14,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Shengyouai\App\Http\Resources\ApiResource;
 use Shengyouai\App\Http\Resources\Model\UCUserResource;
+use Shengyouai\App\Services\SMS\QCloudSMSService;
 use Shengyouai\App\UCModels\UCUser;
 use Shengyouai\App\UCModels\UCUserFeature;
 use Shengyouai\App\UCModels\UCUserOauth;
@@ -116,8 +114,8 @@ EOD;
 
         if ($platform === UCUserOauth::PLATFORM_WX_MINI) {
             return $this->wxMiniOauth(
-                config('wechat.mini.app_id'),
-                config('wechat.mini.secret'),
+                config('ucenter.wechat.mini.app_id'),
+                config('ucenter.wechat.mini.secret'),
                 $request,
                 $response,
                 $params,
@@ -128,8 +126,8 @@ EOD;
 
         if ($platform === UCUserOauth::PLATFORM_WX_OFFICIAL) {
             return $this->wxOfficialOauth(
-                config('wechat.official.app_id'),
-                config('wechat.official.app_id'),
+                config('ucenter.wechat.official.app_id'),
+                config('ucenter.wechat.official.app_id'),
                 $request,
                 $response,
                 $params,
@@ -308,7 +306,10 @@ EOD;
         }
 
         try {
-            $app = Factory::officialAccount(config('wechat.official'));
+            $app = Factory::officialAccount([
+                'app_id' => $appId,
+                'secret' => $secret
+            ]);
             $oauth = $app->oauth;
             $oauthUser = $oauth->user();
 
@@ -414,7 +415,17 @@ EOD;
             return ApiResource::warning($response, '手机号格式有误');
         }
 
-        // TODO 短信验证
+        $smsService = new QCloudSMSService(
+            config('ucenter.sms.appId'),
+            config('ucenter.sms.appKey'),
+            config('ucenter.sms.appSign'),
+            config('ucenter.sms.tempId'),
+            config('ucenter.sms.expires_in')
+        );
+
+        if (!$smsService->verifyCode($cellphone, $params['code'])) {
+            return ApiResource::warning($response, '验证码有误或已失效，请重新获取验证码');
+        }
 
         // 查询用户
         $find = UCUser::findByCellphone($cellphone);

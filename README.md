@@ -129,3 +129,32 @@ class Kernel extends HttpKernel
 接口地址：`/ucenter/logout`
 
 接口方法：`POST`
+
+### 发送短信验证码
+
+接口地址：`/ucenter/sms/send`
+
+接口方法：`post`
+
+接口参数
+
+```json
+{
+  "cellphone": ""
+}
+```
+
+### 短信验证
+
+接口地址：`/ucenter/sms/verify`
+
+接口方法：`post`
+
+接口参数
+
+```json
+{
+  "cellphone": "",
+  "code": ""
+}
+```
